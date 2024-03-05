@@ -23,6 +23,12 @@ class InventoryBatchTransfer(models.Model):
             total_volume = sum(move_line.product_id.volume * move_line.quantity for move_line in record.move_line_ids if move_line.product_id and move_line.product_id.volume)
             max_volume = record.vehicle_category.max_volume
             record.volume = (total_volume / max_volume)*100 if max_volume != 0 else 1000
+
+    
+
+
+    
+
     
     
     
