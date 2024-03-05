@@ -9,7 +9,7 @@
                 <xpath expr="//field[@name='scheduled_date']" position="after">
                     <field name="dock"/>
                     <field name="vehicle" placeholder="Opel/Astra/1-ACK-205"/>
-                    <field name="vehicle_category" placeholder="Semi-truck"/>
+                    <field name="vehicle_category" placeholder="Semi-truck" readonly='True'/>
                     <field name="weight" widget="progressbar" invisible="('vehicle_category'== False)" />
                     <field name="volume" widget="progressbar" invisible="('vehicle_category'== False)"/>
                 </xpath>

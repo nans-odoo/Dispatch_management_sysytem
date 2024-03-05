@@ -10,20 +10,20 @@ class InventoryBatchTransfer(models.Model):
     volume=fields.Float(compute='_compute_volume')
     
     
-    @api.depends('vehicle_category.max_weight','weight')
+    @api.depends("move_line_ids", "vehicle_category")
     def _compute_weight(self):
         for record in self:
-            if record.vehicle_category:
-                record.weight=record.weight / record.vehicle_category.max_weight
-            else:
-                record.weight=0.0
-    
-    @api.depends('vehicle_category.max_volume','volume')
+            total_weight = sum(move_line.product_id.weight * move_line.quantity for move_line in record.move_line_ids if move_line.product_id and move_line.product_id.weight)
+            max_weight = record.vehicle_category.max_weight
+            record.weight = (total_weight / max_weight)*100 if max_weight != 0 else 1000
+
+    @api.depends("move_line_ids", "vehicle_category")
     def _compute_volume(self):
         for record in self:
-            if record.vehicle_category:
-                record.volume=record.volume / record.vehicle_category.max_volume
-            else:
-                record.volume=0.0
+            total_volume = sum(move_line.product_id.volume * move_line.quantity for move_line in record.move_line_ids if move_line.product_id and move_line.product_id.volume)
+            max_volume = record.vehicle_category.max_volume
+            record.volume = (total_volume / max_volume)*100 if max_volume != 0 else 1000
+    
+    
     
     
